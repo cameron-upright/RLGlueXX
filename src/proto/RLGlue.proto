@@ -1,0 +1,119 @@
+package RLGlue;
+
+
+message RLExperimentDesc {
+
+	required string env_config = 1;
+	required string agent_config = 2;
+
+}
+
+
+message StateDesc {
+
+	repeated float float_state = 1;
+	repeated float int_state = 2;
+
+}
+
+message ActionDesc {
+
+	repeated float float_action = 1;
+	repeated int32 int_action   = 2;
+
+}
+
+message RewardState {
+
+	required float     reward   = 1;
+	required StateDesc state    = 2;
+
+}
+
+message RewardStateTerminal {
+
+	required float     reward   = 1;
+  required StateDesc state    = 2;
+  required bool      terminal = 3;
+
+}
+
+
+
+
+
+message EnvironmentCommand {
+
+	enum Type {
+    ENV_INIT    = 0;
+		ENV_START   = 1;
+    ENV_STEP    = 2;
+    ENV_CLEANUP = 3;
+	}
+
+	required Type type = 1;
+
+	optional InitCommand    initCommand = 2;
+	optional StartCommand   startCommand = 3;
+	optional StepCommand    stepCommand = 4;
+	optional CleanupCommand cleanupCommand = 5;
+
+
+	message InitCommand {
+	}
+
+	message StartCommand {
+	}
+
+	message StepCommand {
+		required ActionDesc action = 1;
+	}
+
+	message CleanupCommand {
+	}
+
+}
+
+
+
+
+
+message AgentCommand {
+
+	enum Type {
+    AGENT_INIT    = 0;
+		AGENT_START   = 1;
+    AGENT_STEP    = 2;
+    AGENT_END     = 3;
+    AGENT_CLEANUP = 4;
+	}
+
+	required Type type = 1;
+
+	optional InitCommand    initCommand = 2;
+	optional StartCommand   startCommand = 3;
+	optional StepCommand    stepCommand = 4;
+	optional EndCommand     endCommand = 5;
+	optional CleanupCommand cleanupCommand = 6;
+
+
+	message InitCommand {
+	}
+
+	message StartCommand {
+		required StateDesc state = 1;
+	}
+
+	message StepCommand {
+		required RewardState rewardState = 1;
+	}
+
+	message EndCommand {
+		required float reward = 1;
+	}
+
+	message CleanupCommand {
+	}
+
+}
+
